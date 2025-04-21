@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
-#from sklearn.naive_bayes import GaussianNB
-#from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
 # loading the diabetes dataset to a pandas DataFrame
 df = pd.read_csv('diabetes.csv') 
 
@@ -21,6 +21,7 @@ st.write(df.describe())
 x = df.drop(['Outcome'] , axis=1)
 y = df.iloc[ : , -1] #all rows and only last column
 
+#Data Visualization
 st.subheader('*Visualization:*')
 st.bar_chart(df)
 
@@ -59,14 +60,17 @@ def parameters():
 
 user_data = parameters()
 
-st.header("1- Random Forest Classifier")
-rf = RandomForestClassifier()
-rf.fit(X_train , Y_train)
 
+# GaussianNB Algorithm
+st.header("1- GaussianNB")
+GN = GaussianNB()
+GN.fit(X_train , Y_train)
 st.subheader('Accuaracy:')
-st.write(str(accuracy_score(Y_test , rf.predict(X_test))*100)+ '%')
+st.write(str(accuracy_score(Y_test , GN.predict(X_test))*100)+ '%')
 
-user_result = rf.predict(user_data)
+
+# accuracy & Predecting 
+user_result = GN.predict(user_data)
 st.subheader("your result:")
 output = ""
 if user_result[0] == 0:
@@ -77,13 +81,15 @@ else:
 st.write(output)
 
 
-
+# Support Vector Machine Algorithm
 st.header("2- Support Vector Machine")
 classifier = svm.SVC(kernel='linear')
 classifier.fit(X_train , Y_train)
 st.subheader('Accuaracy:')
 st.write(str(accuracy_score(Y_test , classifier.predict(X_test))*100)+ '%')
 
+
+# accuracy & Predecting 
 user_result = classifier.predict(user_data)
 st.subheader("your result:")
 output = ""
